@@ -40,7 +40,8 @@ endif
 ifneq ($(VERBOSE),)
 VERBOSE_FLAG = -v
 endif
-BUILDMNT = /go/src/$(GOTARGET)
+#BUILDMNT = /go/src/$(GOTARGET)
+BUILDMNT = /$(GOTARGET)
 # The version here should match the version of go configured in
 # .travis.yml
 BUILD_IMAGE ?= golang:1.15.3
@@ -57,7 +58,7 @@ LDFLAG_OPTIONS = -ldflags "-X sigs.k8s.io/kubefed/pkg/version.version=$(GIT_VERS
                       -X sigs.k8s.io/kubefed/pkg/version.buildDate=$(BUILDDATE)"
 
 export GOPATH ?= $(shell go env GOPATH)
-GO_BUILDCMD = CGO_ENABLED=0 go build $(VERBOSE_FLAG) $(LDFLAG_OPTIONS)
+GO_BUILDCMD = CGO_ENABLED=0 go build -mod=vendor $(VERBOSE_FLAG) $(LDFLAG_OPTIONS)
 
 TESTARGS ?= $(VERBOSE_FLAG) -timeout 60s
 TEST_PKGS ?= $(GOTARGET)/cmd/... $(GOTARGET)/pkg/...

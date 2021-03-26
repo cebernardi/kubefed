@@ -29,9 +29,10 @@ import (
 	"path/filepath"
 	"time"
 
+	"sigs.k8s.io/kubefed/cmd/signal"
+
 	"github.com/spf13/cobra"
 
-	genericapiserver "k8s.io/apiserver/pkg/server"
 	_ "k8s.io/client-go/plugin/pkg/client/auth" // Load all client auth plugins for GCP, Azure, Openstack, etc
 	utilflag "k8s.io/component-base/cli/flag"
 	"k8s.io/component-base/logs"
@@ -81,7 +82,7 @@ func commandFor(basename string, defaultCommand *cobra.Command, commands []func(
 
 // NewHyperFedCommand is the entry point for hyperfed
 func NewHyperFedCommand() (*cobra.Command, []func() *cobra.Command) {
-	stopChan := genericapiserver.SetupSignalHandler()
+	stopChan := signal.SetupSignalHandler()
 
 	controller := func() *cobra.Command { return ctrlapp.NewControllerManagerCommand(stopChan) }
 	kubefedctlCmd := func() *cobra.Command { return kubefedctl.NewKubeFedCtlCommand(os.Stdout) }

@@ -3,6 +3,7 @@ module sigs.k8s.io/kubefed
 go 1.14
 
 require (
+	github.com/KyleBanks/depth v1.2.1 // indirect
 	github.com/evanphx/json-patch v4.9.0+incompatible
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-logr/logr v0.3.0 // indirect

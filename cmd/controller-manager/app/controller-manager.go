@@ -43,6 +43,8 @@ import (
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/metrics"
 
+	_ "sigs.k8s.io/controller-runtime/pkg/metrics"
+
 	"sigs.k8s.io/kubefed/cmd/controller-manager/app/leaderelection"
 	"sigs.k8s.io/kubefed/cmd/controller-manager/app/options"
 	corev1b1 "sigs.k8s.io/kubefed/pkg/apis/core/v1beta1"
@@ -393,11 +395,13 @@ func serveHealthz(address string) {
 }
 
 func serveMetrics(address string, stop <-chan struct{}) {
+
 	listener, err := metrics.NewListener(address)
 	if err != nil {
 		klog.Errorf("error creating the new metrics listener")
 		klog.Fatal(err)
 	}
+
 	var metricsPath = "/metrics"
 	handler := promhttp.HandlerFor(metrics.Registry, promhttp.HandlerOpts{
 		ErrorHandling: promhttp.HTTPErrorOnError,
