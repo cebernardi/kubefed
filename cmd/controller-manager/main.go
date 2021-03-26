@@ -20,6 +20,8 @@ import (
 	"fmt"
 	"os"
 
+	"sigs.k8s.io/kubefed/cmd/signal"
+
 	_ "sigs.k8s.io/controller-runtime/pkg/metrics" // for workqueue metrics registration
 
 	_ "k8s.io/client-go/plugin/pkg/client/auth" // Load all client auth plugins for GCP, Azure, Openstack, etc
@@ -35,7 +37,7 @@ func main() {
 	logs.InitLogs()
 	defer logs.FlushLogs()
 
-	stopChan := app.SetupSignalHandler()
+	stopChan := signal.SetupSignalHandler()
 
 	if err := app.NewControllerManagerCommand(stopChan).Execute(); err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
